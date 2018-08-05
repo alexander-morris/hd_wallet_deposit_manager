@@ -1,0 +1,16 @@
+{
+  "name": "t",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "eth-hd-wallet": "^0.4.0",
+    "ethereum-wallet": "0.0.1",
+    "ethereumjs-wallet": "^0.5.2"
+  }
+}
