@@ -17,9 +17,9 @@ const wallet = EthHdWallet.walletFromPKey(extended_public_key)
 
 console.log( wallet instanceof EthHdWallet ); /* true */
 
-var index = 50;
+var index = 7;
 
-var set = 5;
+var set = 10;
 
 wallet.generateAddresses( set, index )
 
