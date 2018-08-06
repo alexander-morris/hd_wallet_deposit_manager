@@ -1,6 +1,8 @@
 
 var sgMail = require('@sendgrid/mail');
 var rp = require('request-promise');
+var mongoose = require('mongoose');
+var deposit = mongoose.model('deposit');
 
 var mc_api_key = "596f8c03d72dd2f8558b6fbddffe3368-us18";
 
@@ -16,11 +18,10 @@ const seed_phrase = "round violin orange unit inherit reduce spray dinner allow 
 // Testing
 // 1. Generate Keys
 const extended_public_key = EthHdWallet.pKeyFromMnemonic(seed_phrase)
+var BIP44_PATH = 'm/44\'/60\'/0\'/0';
 
 // 2. Generate Wallets
-const wallet = EthHdWallet.walletFromPKey(extended_public_key)
-
-console.log( wallet instanceof EthHdWallet ); /* true */
+const ethWallet = EthHdWallet.walletFromPKey(extended_public_key, BIP44_PATH)
 
 
 exports.helloWorld = function (req, res) {
@@ -33,16 +34,40 @@ exports.healthCheck = function (req, res) {
 
 exports.getRandomAddress = function ( req, res ) {
 
+	// &currency="ETH"
+
 	var index = Math.floor((Math.random() * 100) + 1);
 	var set = 1;
 
-	wallet.generateAddresses( set, index )
-	var addressSet = wallet.getAddresses();
+	ethWallet.generateAddresses( set, index )
+	var addressSet = ethWallet.getAddresses();
 
 	console.log( addressSet, addressSet[addressSet.length - 1] )
 	var payload = addressSet[addressSet.length - 1]
 
-	return res.status(200).send(payload);
+	newdeposit = {
+		"timeStamp" : new Date(),
+		"currencyCode" : req.params.currency,
+		"walletIndex" : index
+	}
+
+	console.log(newdeposit)
+			
+	// create a new deposit model
+	deposit.create(newdeposit, function(err, rdeposit) {
+
+		if (err) {
+		  console.log(err)
+		  if(res) return res.status(500).send('deposit init failed ' + err); 
+
+		}else{  
+		  console.log('new deposit created');
+		  console.log(rdeposit);
+		 
+		  return res.status(200).send("new deposit open with address " + addressSet[addressSet.length - 1] + " at index " + rdeposit.walletIndex);
+
+		}
+	});
 
 }
 

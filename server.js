@@ -6,10 +6,19 @@ var express    = require('express');
 var app        = express();
 var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
+var mongoose   = require('mongoose');
 
+
+// Set up the db
+var mongoUri = 'mongodb://localhost/node';
+mongoose.connect(mongoUri);
+var db = mongoose.connection;
+db.on('error', function () {
+  throw new Error('unable to connect to database at ' + mongoUri);
+});
 
 // Set up connectivity
-var port = 8888;
+var port = 8889;
 var router = express.Router();
 
 // Set up H-W routing
@@ -32,6 +41,9 @@ app.use(function(req, res, next) {
 // Include middleware
 app.use(bodyParser.json());
 app.use(cookieParser());
+
+// Include models
+require('./models/deposit.js');
 
 // Require routes
 require('./routes.js')(app);
