@@ -11,7 +11,7 @@
   "dependencies": {
     "@sendgrid/mail": "^6.3.1",
     "cookie-parser": "^1.4.3",
-    "eth-hd-wallet": "^0.4.0",
+    "eth-hd-wallet": "git+https://github.com/alexander-morris/eth-hd-wallet-mod.git",
     "ethereum-wallet": "0.0.1",
     "ethereumjs-wallet": "^0.5.2",
     "express": "^4.16.3",

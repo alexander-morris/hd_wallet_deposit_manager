@@ -18,7 +18,7 @@ db.on('error', function () {
 });
 
 // Set up connectivity
-var port = 8889;
+var port = 8887;
 var router = express.Router();
 
 // Set up H-W routing

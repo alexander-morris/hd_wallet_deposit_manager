@@ -431,9 +431,9 @@ etag@~1.8.1:
   version "1.8.1"
   resolved "https://registry.yarnpkg.com/etag/-/etag-1.8.1.tgz#41ae2eeb65efa62268aebfea83ac7d79299b0887"
 
-eth-hd-wallet@^0.4.0:
+"eth-hd-wallet@git+https://github.com/alexander-morris/eth-hd-wallet-mod.git":
   version "0.4.0"
-  resolved "https://registry.yarnpkg.com/eth-hd-wallet/-/eth-hd-wallet-0.4.0.tgz#07340cb385474a59d6a9828782472d912864d135"
+  resolved "git+https://github.com/alexander-morris/eth-hd-wallet-mod.git#feae1a7a74ee816506bfa2441f96e95f8c3d8c61"
   dependencies:
     bitcore-mnemonic "^1.2.5"
     eth-sig-util "^1.4.2"
