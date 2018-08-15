@@ -13,10 +13,13 @@
     "cookie-parser": "^1.4.3",
     "eth-hd-wallet": "git+https://github.com/alexander-morris/eth-hd-wallet-mod.git",
     "ethereum-wallet": "0.0.1",
+    "ethereumjs-util": "ethereumjs/ethereumjs-util",
     "ethereumjs-wallet": "^0.5.2",
+    "ethjs-util": "^0.1.6",
     "express": "^4.16.3",
     "mailchimp-api-v3": "^1.12.0",
     "mongoose": "^5.2.7",
-    "request-promise": "^4.2.2"
+    "request-promise": "^4.2.2",
+    "web3": "^1.0.0-beta.35"
   }
 }

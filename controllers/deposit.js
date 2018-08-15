@@ -8,6 +8,7 @@ var mc_api_key = "596f8c03d72dd2f8558b6fbddffe3368-us18";
 
 var MailChimpApi = require('mailchimp-api-v3');
 var mailChimp = new MailChimpApi(mc_api_key);
+
 // Dependancies
 const { generateMnemonic, EthHdWallet } = require('eth-hd-wallet')
 
@@ -15,7 +16,6 @@ const { generateMnemonic, EthHdWallet } = require('eth-hd-wallet')
 // Configuration
 const seed_phrase = "round violin orange unit inherit reduce spray dinner allow island you sting"
 
-// Testing
 // 1. Generate Keys
 const extended_public_key = EthHdWallet.pKeyFromMnemonic(seed_phrase)
 var BIP44_PATH = 'm/44\'/60\'/0\'/0';
@@ -67,48 +67,6 @@ exports.checkCaptcha = function (req, res) {
 
 }
 
-function getRandomAddress ( req, res ) {
-
-	// &currency="ETH"
-
-	var index = Math.floor((Math.random() * 100) + 1);
-	var set = 1;
-
-	ethWallet.generateAddresses( set, index )
-	var addressSet = ethWallet.getAddresses();
-
-	console.log( addressSet, addressSet[addressSet.length - 1] )
-	var payload = addressSet[addressSet.length - 1]
-
-	newdeposit = {
-		"timeStamp" : new Date(),
-		"currencyCode" : req.params.currency,
-		"walletIndex" : index
-	}
-
-	console.log(newdeposit)
-			
-	// create a new deposit model
-	deposit.create(newdeposit, function(err, rdeposit) {
-
-		if (err) {
-		  console.log(err)
-		  if(res) return res.status(500).send('deposit init failed ' + err); 
-
-		}else{  
-		  console.log('new deposit created');
-		  console.log(rdeposit);
-		 	
-		  var packet = {
-		  	"address":addressSet[addressSet.length - 1]
-		  }
-
-		  return res.status(200).send(packet);
-
-		}
-	});
-
-}
 
 exports.subscribe = function (req, res) {
 	console.log(req.body.email);
