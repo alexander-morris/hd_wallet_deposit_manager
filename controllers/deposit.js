@@ -126,9 +126,9 @@ exports.generateNewAddress = function (req, res) {
 		  record.address = address
 		  record.nonce = nonce
 
-		  updateRecordWithId (id, record);
+		  updateRecordWithId (nonce, record);
 
-		  if(res) return res.status(200).send("New record init with id " + record._id);
+		  if(res) return res.status(200).send("New Address: " + address);
 
 		}
 	});
@@ -138,16 +138,14 @@ exports.generateNewSeed = function (req, res) {
 	return res.status(200).send(generateSeed());
 }
 
-// Unused:
+function updateRecordWithId (id, record) {
 
-// function updateRecordWithId (id, record) {
+  deposit.updateOne({ id: id }, record, function(err, res) {
+    if (err) throw err;
+    return (true)
+  });
 
-//   deposit.updateOne({ id: id }, record, function(err, res) {
-//     if (err) throw err;
-//     return (true)
-//   });
-
-// }
+}
 
 function generateAddressFromNonce (nonce, currency) {
 
@@ -157,16 +155,40 @@ function generateAddressFromNonce (nonce, currency) {
 
 	var PATH = 'm/44/' + currency_path_code + '/0/0/' + nonce
 	var node = seed.derive(PATH)
-	console.log(node)
-	var publicKey = node._publicKey.toString('hex')
-	console.log('pubkey:' + publicKey)
-	var address = ethUtil.publicToAddress(publicKey)
-	console.log('address:' + address)
-	var chaddress = ethUtil.toChecksumAddress(address);
-	console.log("New Wallet Generated", "\nAt path: " + PATH, "\nPub: " + publicKey, "\nAddr: " + address,  "\nchAddr: " + chaddress, "\n", "\n" )
 
-	return chAddress;
+	var pubKey = node._publicKey
+
+	var address = ethUtil.pubToAddress(ethUtil.importPublic(pubKey)).toString('hex')
+
+	var chaddress = ethUtil.toChecksumAddress(address)
+	console.log("New Wallet Generated", "\nAt path: " + PATH, "\nPub: " + pubKey, "\nAddr: " + address,  "\nchAddr: " + chaddress, "\n", "\n" )
+
+	return chaddress;
+
+
+
+
 }
+
+function derivePKeyForNonce (nonce) {
+
+	var ETH_PATH = 'm/44/60/0/0/' + nonce
+	var node = seed.derive(ETH_PATH)
+	// console.log(node)
+
+	var pubKeyx = node._publicKey
+
+	// console.log("\n pubkey is \n " + pubKeyx, pubKeyx.toString('hex').length)
+
+	var privateKey = node._privateKey.toString('hex')
+	var pubKey = ethUtil.privateToPublic(node._privateKey)
+	var address = ethUtil.publicToAddress(pubKey).toString('hex')
+	var chaddress = ethUtil.toChecksumAddress(address)
+	// console.log("\nNew Wallet Key Generated", "\nFor path: " + ETH_PATH, "\nPub: " + pubKeyx.toString('hex'), "\nPriv: " + privateKey, "\nAddr: " + address,  "\nchAddr: " + chaddress, "\n", "\n" )
+
+	return privateKey;
+}
+
 
 function getCurrencyCode(currency) {
 	// Add switch for currency codes here
