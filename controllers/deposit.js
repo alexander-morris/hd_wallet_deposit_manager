@@ -120,7 +120,7 @@ exports.generateNewAddress = function (req, res) {
 		  console.log(record);
 
 		  var nonce = parseInt(record._id, 10)
-
+		  console.log(nonce)
 		  var address = generateAddressFromNonce(nonce)
 		
 		  record.address = address

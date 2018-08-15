@@ -7,6 +7,7 @@ var depositSchema = new Schema ({
   name: String, 
   email: String, 
   currencyCode: String,
+  nonce: String,
   timeStamp: Date,
   address: String
 });
