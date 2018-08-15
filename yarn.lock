@@ -910,7 +910,7 @@ express@^4.14.0, express@^4.16.3:
     utils-merge "1.0.1"
     vary "~1.1.2"
 
-extend@~3.0.1, extend@~3.0.2:
+extend@^3.0.0, extend@~3.0.1, extend@~3.0.2:
   version "3.0.2"
   resolved "https://registry.yarnpkg.com/extend/-/extend-3.0.2.tgz#f8b1136b4071fbd8eb140aff858b1019ec2915fa"
 
@@ -1468,9 +1468,22 @@ mongodb@3.1.1:
   dependencies:
     mongodb-core "3.1.0"
 
+mongoose-auto-increment@^5.0.1:
+  version "5.0.1"
+  resolved "https://registry.yarnpkg.com/mongoose-auto-increment/-/mongoose-auto-increment-5.0.1.tgz#827e051d9cc371dabe8bff1a704431d341cb79df"
+  dependencies:
+    extend "^3.0.0"
+
 mongoose-legacy-pluralize@1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/mongoose-legacy-pluralize/-/mongoose-legacy-pluralize-1.0.2.tgz#3ba9f91fa507b5186d399fb40854bff18fb563e4"
+
+mongoose-simpledb@^5.1.0:
+  version "5.1.0"
+  resolved "https://registry.yarnpkg.com/mongoose-simpledb/-/mongoose-simpledb-5.1.0.tgz#3cb3d795ebfa121972412509d78296c912e46780"
+  dependencies:
+    extend "^3.0.0"
+    mongoose-auto-increment "^5.0.1"
 
 mongoose@^5.2.7:
   version "5.2.7"

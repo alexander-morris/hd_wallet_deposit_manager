@@ -23,6 +23,7 @@
     "express": "^4.16.3",
     "mailchimp-api-v3": "^1.12.0",
     "mongoose": "^5.2.7",
+    "mongoose-simpledb": "^5.1.0",
     "request-promise": "^4.2.2",
     "web3": "^1.0.0-beta.35"
   }

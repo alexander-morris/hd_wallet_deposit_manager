@@ -16,12 +16,17 @@ const ethUtil = require('ethereumjs-util');
 const Web3 = require('web3')
 const base58 = require('base-58');
 const _bitcoreMnemonic = require('bitcore-mnemonic');
+var _bitcoreMnemonic2 = _interopRequireDefault(_bitcoreMnemonic);
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 const bs58check = require('bs58check')
 const master_pubx = "xpub661MyMwAqRbcH2Z5RtM6ydu98YudxiUDTaBESx9VgXpURBCDdWGezitJ8ormADG6CsJPs23fLmaeLp8RJgNvFo6YJkGhpXnHusCkRhGZdqr"
 const seed = HDKey.fromExtendedKey(master_pubx)
 
-var _bitcoreMnemonic2 = _interopRequireDefault(_bitcoreMnemonic);
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+const seed_phrase = "round violin orange unit inherit reduce spray dinner allow island you sting"
+const master_priv_key = new _bitcoreMnemonic2.default(seed_phrase).toHDPrivateKey().toString();
+const master_seed = HDKey.fromMasterSeed(new Buffer.from(master_priv_key, 'hex'))
+
 
 
 exports.helloWorld = function (req, res) {
@@ -119,14 +124,18 @@ exports.generateNewAddress = function (req, res) {
 		  console.log('new record created');
 		  console.log(record);
 
-		  var nonce = parseInt(record._id, 10)
-		  console.log(nonce)
+		  // var nonce = getIntegerFromString(record._id.toString('hex'))
+		  var nonce = Math.floor(Math.random() * 100); 
+		  console.log("nonce is " + nonce)
+
+
 		  var address = generateAddressFromNonce(nonce)
 		
 		  record.address = address
 		  record.nonce = nonce
 
-		  updateRecordWithId (nonce, record);
+		  updateRecordWithId (nonce, record)
+		  console.log('pkey is ' + derivePKeyForNonce (nonce))
 
 		  if(res) return res.status(200).send("New Address: " + address);
 
@@ -136,6 +145,20 @@ exports.generateNewAddress = function (req, res) {
 
 exports.generateNewSeed = function (req, res) {
 	return res.status(200).send(generateSeed());
+}
+
+function getIntegerFromString (string) {
+
+	console.log(string, string.length)
+
+	var integer = ""
+
+	for ( i = 0; i < string.length; i++ ) {
+		integer += string[i].charCodeAt(0)
+		console.log(integer)
+	}
+
+	return integer;
 }
 
 function updateRecordWithId (id, record) {
@@ -173,7 +196,7 @@ function generateAddressFromNonce (nonce, currency) {
 function derivePKeyForNonce (nonce) {
 
 	var ETH_PATH = 'm/44/60/0/0/' + nonce
-	var node = seed.derive(ETH_PATH)
+	var node = master_seed.derive(ETH_PATH)
 	// console.log(node)
 
 	var pubKeyx = node._publicKey
