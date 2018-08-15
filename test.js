@@ -58,7 +58,7 @@ function deriveChildPrivate (nonce) {
 
 function deriveChildPublic (nonce) {
 
-	var ETH_PATH = 'm/44\'/60\'/0\'/0/' + nonce
+	var ETH_PATH = 'm/44/60/0/0/' + nonce
 	var node = seed.derive(ETH_PATH)
 	var privateKey = node._privateKey.toString('hex')
 	var pubKey = ethUtil.privateToPublic(node._privateKey)

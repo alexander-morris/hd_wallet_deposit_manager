@@ -6,9 +6,9 @@ Schema = mongoose.Schema;
 var depositSchema = new Schema ({
   name: String, 
   email: String, 
-  walletIndex: String,
   currencyCode: String,
-  timeStamp: Date
+  timeStamp: Date,
+  address: String
 });
 
 module.exports = mongoose.model('deposit', depositSchema);

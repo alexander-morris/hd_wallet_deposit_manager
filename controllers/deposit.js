@@ -9,19 +9,19 @@ var mc_api_key = "596f8c03d72dd2f8558b6fbddffe3368-us18";
 var MailChimpApi = require('mailchimp-api-v3');
 var mailChimp = new MailChimpApi(mc_api_key);
 
-// Dependancies
-const { generateMnemonic, EthHdWallet } = require('eth-hd-wallet')
+const _hdkey = require('ethereumjs-wallet/hdkey');
+const HDKey = require('hdkey')
+const wallet = require('ethereumjs-wallet')
+const ethUtil = require('ethereumjs-util');
+const Web3 = require('web3')
+const base58 = require('base-58');
+const _bitcoreMnemonic = require('bitcore-mnemonic');
+const bs58check = require('bs58check')
+const master_pubx = "xpub661MyMwAqRbcH2Z5RtM6ydu98YudxiUDTaBESx9VgXpURBCDdWGezitJ8ormADG6CsJPs23fLmaeLp8RJgNvFo6YJkGhpXnHusCkRhGZdqr"
+const seed = HDKey.fromExtendedKey(master_pubx)
 
-// Basic HD Wallet Controls
-// Configuration
-const seed_phrase = "round violin orange unit inherit reduce spray dinner allow island you sting"
-
-// 1. Generate Keys
-const extended_public_key = EthHdWallet.pKeyFromMnemonic(seed_phrase)
-var BIP44_PATH = 'm/44\'/60\'/0\'/0';
-
-// 2. Generate Wallets
-const ethWallet = EthHdWallet.walletFromPKey(extended_public_key, BIP44_PATH)
+var _bitcoreMnemonic2 = _interopRequireDefault(_bitcoreMnemonic);
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 
 exports.helloWorld = function (req, res) {
@@ -32,8 +32,6 @@ exports.healthCheck = function (req, res) {
 	return res.status(200);
 }
 
-
-
 exports.checkCaptcha = function (req, res) {
     var response = req.body.response
     console.log(req.body);
@@ -43,7 +41,7 @@ exports.checkCaptcha = function (req, res) {
 	        uri: 'https://recaptcha.google.com/recaptcha/api/siteverify',
 	        method: 'POST',
 	        formData: {
-	            secret: '6Lef510UAAAAACOoGmTQWtzXB3Zuoc6-Dbu1LgN-',
+	            secret: '1234567890',
 	            response: response
 	        },
 	        json: true
@@ -66,7 +64,6 @@ exports.checkCaptcha = function (req, res) {
 	    })
 
 }
-
 
 exports.subscribe = function (req, res) {
 	console.log(req.body.email);
@@ -103,7 +100,97 @@ exports.subscribe = function (req, res) {
 
 }
 
+exports.generateNewAddress = function (req, res) {
 
+	console.log('entered generateNewAddress')
+
+	var newDeposit = {
+		"name":"john",
+		"email":"email",
+		"currencyCode":req.params.currency,
+		"timestamp": new Date
+	}
+
+	deposit.create(newDeposit, function(err, record) {
+		if (err) {
+		  if(res) return res.status(500).send('Record init failed ' + err); 
+
+		}else{
+		  console.log('new record created');
+		  console.log(record);
+
+		  var nonce = parseInt(record._id, 10)
+
+		  var address = generateAddressFromNonce(nonce)
+		
+		  record.address = address
+		  record.nonce = nonce
+
+		  updateRecordWithId (id, record);
+
+		  if(res) return res.status(200).send("New record init with id " + record._id);
+
+		}
+	});
+}
+
+exports.generateNewSeed = function (req, res) {
+	return res.status(200).send(generateSeed());
+}
+
+// Unused:
+
+// function updateRecordWithId (id, record) {
+
+//   deposit.updateOne({ id: id }, record, function(err, res) {
+//     if (err) throw err;
+//     return (true)
+//   });
+
+// }
+
+function generateAddressFromNonce (nonce, currency) {
+
+	console.log('\nentering generateAddressFromNonce', "\nnonce: " + nonce, "\ncurrency: " + currency)
+
+	var currency_path_code = getCurrencyCode(currency)
+
+	var PATH = 'm/44/' + currency_path_code + '/0/0/' + nonce
+	var node = seed.derive(PATH)
+	console.log(node)
+	var publicKey = node._publicKey.toString('hex')
+	console.log('pubkey:' + publicKey)
+	var address = ethUtil.publicToAddress(publicKey)
+	console.log('address:' + address)
+	var chaddress = ethUtil.toChecksumAddress(address);
+	console.log("New Wallet Generated", "\nAt path: " + PATH, "\nPub: " + publicKey, "\nAddr: " + address,  "\nchAddr: " + chaddress, "\n", "\n" )
+
+	return chAddress;
+}
+
+function getCurrencyCode(currency) {
+	// Add switch for currency codes here
+	return "60";
+}
+
+function generateSeed () {
+	// Basic HD Wallet Controls
+	// Configuration
+	const seed_phrase = "round violin orange unit inherit reduce spray dinner allow island you sting"
+
+	// 1. Generate Keys
+	const master_priv_key = new _bitcoreMnemonic2.default(seed_phrase).toHDPrivateKey().toString();
+
+	var seed = HDKey.fromMasterSeed(new Buffer.from(master_priv_key, 'hex'))
+
+	var master = {
+		'priv':seed.privateKey.toString('hex'),
+		'pub':seed.publicKey.toString('hex'),
+		'pubx':seed.publicExtendedKey
+	};
+
+	return master;
+}
 
 function callMailChimp (call, callback) {
 	// mailchimp.request({
@@ -131,7 +218,7 @@ function callMailChimp (call, callback) {
 function sendMail (payload, res) {
 	console.log('sending payload', payload);
 
-	sgMail.setApiKey('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');
+	sgMail.setApiKey('SG.1234567890');
 
 	var message = payload.name + "(" + payload.email + ")" + " sent you a new message: " + payload.comment;
 
