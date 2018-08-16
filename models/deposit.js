@@ -12,4 +12,4 @@ var depositSchema = new Schema ({
   address: String
 });
 
-module.exports = mongoose.model('deposit', depositSchema);
+module.exports = mongoose.model('deposits', depositSchema);

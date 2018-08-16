@@ -2,7 +2,7 @@
 var sgMail = require('@sendgrid/mail');
 var rp = require('request-promise');
 var mongoose = require('mongoose');
-var deposit = mongoose.model('deposit');
+var deposit = mongoose.model('deposits');
 
 var mc_api_key = "596f8c03d72dd2f8558b6fbddffe3368-us18";
 
@@ -16,17 +16,20 @@ const ethUtil = require('ethereumjs-util');
 const Web3 = require('web3')
 const base58 = require('base-58');
 const _bitcoreMnemonic = require('bitcore-mnemonic');
-var _bitcoreMnemonic2 = _interopRequireDefault(_bitcoreMnemonic);
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
 const bs58check = require('bs58check')
 const master_pubx = "xpub661MyMwAqRbcH2Z5RtM6ydu98YudxiUDTaBESx9VgXpURBCDdWGezitJ8ormADG6CsJPs23fLmaeLp8RJgNvFo6YJkGhpXnHusCkRhGZdqr"
 const seed = HDKey.fromExtendedKey(master_pubx)
 
-const seed_phrase = "round violin orange unit inherit reduce spray dinner allow island you sting"
-const master_priv_key = new _bitcoreMnemonic2.default(seed_phrase).toHDPrivateKey().toString();
-const master_seed = HDKey.fromMasterSeed(new Buffer.from(master_priv_key, 'hex'))
+var _bitcoreMnemonic2 = _interopRequireDefault(_bitcoreMnemonic);
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+var seed_phrase = "round violin orange unit inherit reduce spray dinner allow island you sting";
+
+const master_priv_key = new _bitcoreMnemonic2.default(seed_phrase).toHDPrivateKey().toString()
+
+
+
+var master_seed = HDKey.fromMasterSeed(new Buffer.from(master_priv_key, 'hex'))
 
 
 exports.helloWorld = function (req, res) {
@@ -67,7 +70,6 @@ exports.checkCaptcha = function (req, res) {
 	        console.log("Recaptcha request failure", reason)
 	        return ("Recaptcha request failed.")
 	    })
-
 }
 
 exports.subscribe = function (req, res) {
@@ -101,19 +103,23 @@ exports.subscribe = function (req, res) {
 	} else {
 		return res.status(200).send('body.email is undefined');
 	}
-
-
 }
 
 exports.generateNewAddress = function (req, res) {
 
 	console.log('entered generateNewAddress')
+	var nonce = Math.floor(Math.random() * 100); 
+	console.log("nonce is " + nonce)
+
+	var address = generateAddressFromNonce(nonce)
 
 	var newDeposit = {
 		"name":"john",
 		"email":"email",
 		"currencyCode":req.params.currency,
-		"timestamp": new Date
+		"timestamp": new Date,
+		"nonce":nonce,
+		"address":address
 	}
 
 	deposit.create(newDeposit, function(err, record) {
@@ -125,17 +131,9 @@ exports.generateNewAddress = function (req, res) {
 		  console.log(record);
 
 		  // var nonce = getIntegerFromString(record._id.toString('hex'))
-		  var nonce = Math.floor(Math.random() * 100); 
-		  console.log("nonce is " + nonce)
 
-
-		  var address = generateAddressFromNonce(nonce)
-		
-		  record.address = address
-		  record.nonce = nonce
-
-		  updateRecordWithId (nonce, record)
-		  console.log('pkey is ' + derivePKeyForNonce (nonce))
+		  // updateRecordWithId (nonce, record)
+		  // console.log('pkey is ' + derivePKeyForNonce (nonce))
 
 		  if(res) return res.status(200).send("New Address: " + address);
 
@@ -167,7 +165,6 @@ function updateRecordWithId (id, record) {
     if (err) throw err;
     return (true)
   });
-
 }
 
 function generateAddressFromNonce (nonce, currency) {
@@ -187,10 +184,6 @@ function generateAddressFromNonce (nonce, currency) {
 	console.log("New Wallet Generated", "\nAt path: " + PATH, "\nPub: " + pubKey, "\nAddr: " + address,  "\nchAddr: " + chaddress, "\n", "\n" )
 
 	return chaddress;
-
-
-
-
 }
 
 function derivePKeyForNonce (nonce) {
