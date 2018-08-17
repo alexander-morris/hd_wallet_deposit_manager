@@ -39,7 +39,7 @@ function generateSeed () {
 	console.log(seed_phrase)
 	var master_priv_key = new _bitcoreMnemonic2.default(seed_phrase).toHDPrivateKey().toString()
 	console.log(master_priv_key)
-	var master_seed = HDKey.fromMasterSeed(new Buffer.from("zeta", 'hex'))
+	var master_seed = HDKey.fromMasterSeed(new Buffer.from(master_priv_key, 'utf8'))
 	console.log(master_seed)
 
 	var master = {
@@ -47,7 +47,7 @@ function generateSeed () {
 		'pub':master_seed.publicKey.toString('hex'),
 		'pubx':master_seed.publicExtendedKey
 	};
-	
+
 	return master;
 
 }

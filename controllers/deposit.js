@@ -27,8 +27,6 @@ var seed_phrase = "round violin orange unit inherit reduce spray dinner allow is
 
 const master_priv_key = new _bitcoreMnemonic2.default(seed_phrase).toHDPrivateKey().toString()
 
-
-
 var master_seed = HDKey.fromMasterSeed(new Buffer.from(master_priv_key, 'hex'))
 
 
@@ -133,7 +131,7 @@ exports.generateNewAddress = function (req, res) {
 		  // var nonce = getIntegerFromString(record._id.toString('hex'))
 
 		  // updateRecordWithId (nonce, record)
-		  // console.log('pkey is ' + derivePKeyForNonce (nonce))
+		  console.log('pkey is ' + derivePKeyForNonce (nonce))
 
 		  if(res) return res.status(200).send("New Address: " + address);
 
@@ -208,7 +206,14 @@ function derivePKeyForNonce (nonce) {
 
 function getCurrencyCode(currency) {
 	// Add switch for currency codes here
-	return "60";
+	if ('ETH' === currency ) {
+		return "60";		
+	} else if ( 'BTC' === currency ) {
+		return "1"
+	} else {
+		return "60"
+	}
+
 }
 
 function generateSeed () {
