@@ -12,42 +12,12 @@ var ethUtil = require('ethereumjs-util');
 var Web3 = require('web3')
 var base58 = require('base-58');
 var bs58check = require('bs58check')
+const private_helper = require('./helpers/private_helper')
 var ethHdWalletUtil = require('eth-hd-wallet')
 var _bitcoreMnemonic = require('bitcore-mnemonic');
 var _bitcoreMnemonic2 = _interopRequireDefault(_bitcoreMnemonic);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-// Set up the db
-var mongoUri = 'mongodb://localhost/node';
-mongoose.connect(mongoUri);
-var db = mongoose.connection;
-db.on('error', function () {
-  throw new Error('unable to connect to database at ' + mongoUri);
-});
-
-// Include models
-require('./models/deposit.js');
-var deposit = mongoose.model('deposits');
-
 // Runtime
-var master_seed_set = generateSeed();
+var master_seed_set = private_helper.generateSeed();
 console.log(master_seed_set)
-
-function generateSeed () {
-
-	var seed_phrase = ethHdWalletUtil.generateMnemonic();
-	console.log(seed_phrase)
-	var master_priv_key = new _bitcoreMnemonic2.default(seed_phrase).toHDPrivateKey().toString()
-	console.log(master_priv_key)
-	var master_seed = HDKey.fromMasterSeed(new Buffer.from(master_priv_key, 'utf8'))
-	console.log(master_seed)
-
-	var master = {
-		'priv':master_seed.privateKey.toString('hex'),
-		'pub':master_seed.publicKey.toString('hex'),
-		'pubx':master_seed.publicExtendedKey
-	};
-
-	return master;
-
-}

@@ -1,13 +1,47 @@
+// test-generation.js
+// 
+// This can be used to test the address and private key derivation match for a range of currency
 
-var HDKey = require('hdkey')
+// Dependancies
+const rp = require('request-promise');
+const mongoose = require('mongoose');
+const _hdkey = require('ethereumjs-wallet/hdkey');
+const HDKey = require('hdkey')
+const wallet = require('ethereumjs-wallet')
+const ethUtil = require('ethereumjs-util');
+const Web3 = require('web3')
+const base58 = require('base-58');
+const _bitcoreMnemonic = require('bitcore-mnemonic');
+const bs58check = require('bs58check')
+const config = require('./config.json')
+const helper = require('./helpers/helper')
+const private_helper = require('./helpers/private_helper')
 
-for ( var i = 0; i < 10; i++ ) {
+const public_seed = HDKey.fromExtendedKey(config.master_pubx)
+const private_seed = HDKey.fromMasterSeed(new Buffer.from(config.master_priv_key))
 
-	var nonce = Math.floor(Math.random() * 1000000); 
 
-	var str = "str" + i + nonce;
-	console.log(str)
-	var master_seed = HDKey.fromMasterSeed(new Buffer.from(str, 'utf8'))
-	console.log(master_seed._privateKey.toString('hex'))	
+for ( var nonce = 0; nonce < 1; nonce++ ) {
+	console.log( helper.generateNewAddress(nonce, "ETH", public_seed) )
 
+	console.log( private_helper.derivePKeyForNonce(nonce, "ETH", private_seed) )
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

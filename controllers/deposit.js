@@ -17,7 +17,7 @@ const Web3 = require('web3')
 const base58 = require('base-58');
 const _bitcoreMnemonic = require('bitcore-mnemonic');
 const bs58check = require('bs58check')
-const master_pubx = "xpub661MyMwAqRbcH2Z5RtM6ydu98YudxiUDTaBESx9VgXpURBCDdWGezitJ8ormADG6CsJPs23fLmaeLp8RJgNvFo6YJkGhpXnHusCkRhGZdqr"
+const master_pubx = "xpub661MyMwAqRbcFg4yGV4vGLJCtXrFU72Zu3reG1hsCHpn4Pt5Gnhj9Dw89vQXAhfYgkuMfQRENQxEGBHv3kWhmow4PJgfEVtFxi3gF4sesPt"
 const seed = HDKey.fromExtendedKey(master_pubx)
 
 var _bitcoreMnemonic2 = _interopRequireDefault(_bitcoreMnemonic);
@@ -68,39 +68,6 @@ exports.checkCaptcha = function (req, res) {
 	        console.log("Recaptcha request failure", reason)
 	        return ("Recaptcha request failed.")
 	    })
-}
-
-exports.subscribe = function (req, res) {
-	console.log(req.body.email);
-	if ("undefined" != typeof(req.body.email)){
-		var body_data = {
-		    "email_address": req.body.email,
-		    "status": "subscribed",
-		};
-
-		var call = {
-			"method":"post",
-			"path":"/lists/d50da5888a/members/",
-			"path_params":"",
-			"body":body_data,
-			"query":""
-		};
-
-		callMailChimp(call, function(result){
-
-			console.log(result);
-			if ( null === result ) {
-				// mailchimp signup success
-				return res.status(200).send('signup success');
-			} else {
-				// mailchimp signup success
-				return res.status(200).send('error');
-			}
-		});
-
-	} else {
-		return res.status(200).send('body.email is undefined');
-	}
 }
 
 exports.generateNewAddress = function (req, res) {
@@ -214,25 +181,6 @@ function getCurrencyCode(currency) {
 		return "60"
 	}
 
-}
-
-function generateSeed () {
-	// Basic HD Wallet Controls
-	// Configuration
-	const seed_phrase = "round violin orange unit inherit reduce spray dinner allow island you sting"
-
-	// 1. Generate Keys
-	const master_priv_key = new _bitcoreMnemonic2.default(seed_phrase).toHDPrivateKey().toString();
-
-	var seed = HDKey.fromMasterSeed(new Buffer.from(master_priv_key, 'hex'))
-
-	var master = {
-		'priv':seed.privateKey.toString('hex'),
-		'pub':seed.publicKey.toString('hex'),
-		'pubx':seed.publicExtendedKey
-	};
-
-	return master;
 }
 
 function callMailChimp (call, callback) {

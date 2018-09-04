@@ -31,7 +31,7 @@ var deposit = mongoose.model('deposits');
 var _bitcoreMnemonic2 = _interopRequireDefault(_bitcoreMnemonic);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var seed_phrase = "round violin orange unit inherit reduce spray dinner allow island you sting";
+var seed_phrase = "august voice drastic imitate stereo harvest permit inch jungle return step alone";
 
 const master_priv_key = new _bitcoreMnemonic2.default(seed_phrase).toHDPrivateKey().toString()
 
