@@ -60,7 +60,7 @@ function generateAddressFromNonce (public_seed, nonce, currency) {
 		    var chaddress = bitcoin.payments.p2pkh({ pubkey: keyPair.publicKey }).address
 
 		}
-		// console.log("New Wallet Generated", "\nAt path: " + PATH, "\nFull Node: ", node, "\nPub: " + pubKey, "\nAddr: " + address,  "\nchAddr: " + chaddress, "\n", "\n" )
+		console.log("New Wallet Generated", "\nAt path: " + PATH, "\nFull Node: ", node, "\nPub: " + pubKey, "\nAddr: " + address,  "\nchAddr: " + chaddress, "\n", "\n" )
 		
 
 		// console.log(node)

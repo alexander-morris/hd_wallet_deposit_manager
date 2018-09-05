@@ -19,12 +19,10 @@ const private_helper = require('./helpers/private_helper')
 const public_seed = HDKey.fromExtendedKey(config.master_pubx)
 const private_seed = HDKey.fromMasterSeed(new Buffer.from(config.master_priv_key))
 
+console.log( helper.generateNewAddress(63, "BTC", public_seed) )
 
-for ( var nonce = 0; nonce < 1; nonce++ ) {
-	console.log( helper.generateNewAddress(nonce, "BTC", public_seed) )
+console.log( private_helper.derivePKeyForNonce(63, "BTC", private_seed) )
 
-	console.log( private_helper.derivePKeyForNonce(nonce, "BTC", private_seed) )
-}
 
 
 
