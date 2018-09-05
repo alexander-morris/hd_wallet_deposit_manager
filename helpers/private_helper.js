@@ -38,14 +38,15 @@ var self =  module.exports = {
 			var pubKey = ethUtil.privateToPublic(node._privateKey)
 			var address = ethUtil.publicToAddress(pubKey).toString('hex')
 			var chaddress = ethUtil.toChecksumAddress(address)
-			// console.log("\nNew Wallet Key Generated", "\nFor path: " + PATH, "\nFull Node: ", node, "\nPub: " + pubKeyx.toString('hex'), "\nPriv: " + privateKey, "\nAddr: " + address,  "\nchAddr: " + chaddress, "\n", "\n" )
-		
+			
 		} else if ( "BTC" === currency ) {
 
 			var	keyPair = bitcoin.ECPair.fromPrivateKey(new Buffer(privateKey, 'hex'))
 		    var chaddress = bitcoin.payments.p2pkh({ pubkey: keyPair.publicKey })
+		    
 		}
-
+		// console.log("\nNew Wallet Key Generated", "\nFor path: " + PATH, "\nFull Node: ", node, "\nPub: " + pubKeyx.toString('hex'), "\nPriv: " + privateKey, "\nAddr: " + address,  "\nchAddr: " + chaddress, "\n", "\n" )
+		
 		var derived_node = {
 			"pub":chaddress.address,
 			"priv":privateKey

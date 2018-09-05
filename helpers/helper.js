@@ -7,6 +7,7 @@ const wallet = require('ethereumjs-wallet')
 const ethUtil = require('ethereumjs-util');
 const Web3 = require('web3')
 const base58 = require('base-58');
+const bitcoin = require('bitcoinjs-lib')
 const _bitcoreMnemonic = require('bitcore-mnemonic');
 const bs58check = require('bs58check')
 const config = require('../config')
@@ -45,19 +46,22 @@ function generateAddressFromNonce (public_seed, nonce, currency) {
 		var node = public_seed.derive(PATH)
 
 		if ( "ETH" === currency ) {
-			
+
 			var pubKey = ethUtil.importPublic(node._publicKey)
 
 			var address = ethUtil.pubToAddress(pubKey).toString('hex')
 
 			var chaddress = ethUtil.toChecksumAddress(address)
-			// console.log("New Wallet Generated", "\nAt path: " + PATH, "\nFull Node: ", node, "\nPub: " + pubKey, "\nAddr: " + address,  "\nchAddr: " + chaddress, "\n", "\n" )
-		
+			
 		} else if ( "BTC" === currency ) {
 
-			
+			var keyPair = bitcoin.ECPair.fromPublicKey(node._publicKey)
+
+		    var chaddress = bitcoin.payments.p2pkh({ pubkey: keyPair.publicKey }).address
 
 		}
+		// console.log("New Wallet Generated", "\nAt path: " + PATH, "\nFull Node: ", node, "\nPub: " + pubKey, "\nAddr: " + address,  "\nchAddr: " + chaddress, "\n", "\n" )
+		
 
 		// console.log(node)
 		return chaddress
