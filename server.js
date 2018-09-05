@@ -1,5 +1,5 @@
 // server.js
-// 6Lef510UAAAAACOoGmTQWtzXB3Zuoc6-Dbu1LgN-
+// Run with 'node server.js' to launch the app
 
 // introduce dependancies
 var express    = require('express');

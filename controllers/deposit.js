@@ -6,22 +6,21 @@ var helper = require('../helpers/helper.js')
 // ** Run Initialize.js to get the extended public and private key for your wallet, and then update config.json to include your extended public key.
 
 // Include Dependancies
-var rp = require('request-promise');
-var mongoose = require('mongoose');
-var deposit = mongoose.model('deposits');
-const _hdkey = require('ethereumjs-wallet/hdkey');
+var rp = require('request-promise')
+var mongoose = require('mongoose')
+var deposit = mongoose.model('deposits')
+const _hdkey = require('ethereumjs-wallet/hdkey')
 const HDKey = require('hdkey')
 const wallet = require('ethereumjs-wallet')
-const ethUtil = require('ethereumjs-util');
+const ethUtil = require('ethereumjs-util')
 const Web3 = require('web3')
-const base58 = require('base-58');
-const _bitcoreMnemonic = require('bitcore-mnemonic');
+const base58 = require('base-58')
+const _bitcoreMnemonic = require('bitcore-mnemonic')
 const bs58check = require('bs58check')
 const master_pubx = "xpub661MyMwAqRbcFg4yGV4vGLJCtXrFU72Zu3reG1hsCHpn4Pt5Gnhj9Dw89vQXAhfYgkuMfQRENQxEGBHv3kWhmow4PJgfEVtFxi3gF4sesPt"
 
 // Generate the public seed which will be used to generate addresses
 const public_seed = HDKey.fromExtendedKey(config.master_pubx)
-
 
 // Function Declarations
 module.exports = {
@@ -49,7 +48,7 @@ module.exports = {
 		        console.log("recaptcha result", result)
 		        if (result.success) {
 		        	console.log('success: true')
-		            getRandomAddress(req, res);	        	
+		            getRandomAddress(req, res)        	
 
 
 		        } else {
@@ -84,8 +83,8 @@ module.exports = {
 			  if(res) return res.status(500).send('Record init failed ' + err); 
 
 			}else{
-			  console.log('new record created');
-			  console.log(record);
+			  console.log('new record created')
+			  console.log(record)
 
 			  if(res) return res.status(200).send("New Address: " + address);
 
@@ -93,7 +92,7 @@ module.exports = {
 		});
 	},
 	generateNewSeed : function generateNewSeed (req, res) {
-		return res.status(200).send(generateSeed());
+		return res.status(200).send(generateSeed())
 	}
 }
 
