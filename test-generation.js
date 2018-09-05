@@ -4,7 +4,6 @@
 
 // Dependancies
 const rp = require('request-promise');
-const mongoose = require('mongoose');
 const _hdkey = require('ethereumjs-wallet/hdkey');
 const HDKey = require('hdkey')
 const wallet = require('ethereumjs-wallet')
@@ -22,9 +21,9 @@ const private_seed = HDKey.fromMasterSeed(new Buffer.from(config.master_priv_key
 
 
 for ( var nonce = 0; nonce < 1; nonce++ ) {
-	console.log( helper.generateNewAddress(nonce, "ETH", public_seed) )
+	console.log( helper.generateNewAddress(nonce, "BTC", public_seed) )
 
-	console.log( private_helper.derivePKeyForNonce(nonce, "ETH", private_seed) )
+	console.log( private_helper.derivePKeyForNonce(nonce, "BTC", private_seed) )
 }
 
 

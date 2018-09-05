@@ -1,7 +1,6 @@
 
 // Dependancies
 var rp = require('request-promise');
-var mongoose = require('mongoose');
 var _hdkey = require('ethereumjs-wallet/hdkey');
 var HDKey = require('hdkey')
 var wallet = require('ethereumjs-wallet')
@@ -10,6 +9,7 @@ var Web3 = require('web3')
 var base58 = require('base-58');
 var bs58check = require('bs58check')
 var ethHdWalletUtil = require('eth-hd-wallet')
+var bitcoin = require('bitcoinjs-lib')
 var _bitcoreMnemonic = require('bitcore-mnemonic');
 var _bitcoreMnemonic2 = _interopRequireDefault(_bitcoreMnemonic);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -32,13 +32,27 @@ var self =  module.exports = {
 		// console.log("\n pubkey is \n " + pubKeyx, pubKeyx.toString('hex').length)
 
 		var privateKey = node._privateKey.toString('hex')
-		var pubKey = ethUtil.privateToPublic(node._privateKey)
-		var address = ethUtil.publicToAddress(pubKey).toString('hex')
-		var chaddress = ethUtil.toChecksumAddress(address)
-		// console.log("\nNew Wallet Key Generated", "\nFor path: " + PATH, "\nFull Node: ", node, "\nPub: " + pubKeyx.toString('hex'), "\nPriv: " + privateKey, "\nAddr: " + address,  "\nchAddr: " + chaddress, "\n", "\n" )
+
+		if ( "ETH" === currency ) {
+		
+			var pubKey = ethUtil.privateToPublic(node._privateKey)
+			var address = ethUtil.publicToAddress(pubKey).toString('hex')
+			var chaddress = ethUtil.toChecksumAddress(address)
+			// console.log("\nNew Wallet Key Generated", "\nFor path: " + PATH, "\nFull Node: ", node, "\nPub: " + pubKeyx.toString('hex'), "\nPriv: " + privateKey, "\nAddr: " + address,  "\nchAddr: " + chaddress, "\n", "\n" )
+		
+		} else if ( "BTC" === currency ) {
+
+			var	keyPair = bitcoin.ECPair.fromPrivateKey(new Buffer(privateKey, 'hex'))
+		    var chaddress = bitcoin.payments.p2pkh({ pubkey: keyPair.publicKey })
+		}
+
+		var derived_node = {
+			"pub":chaddress.address,
+			"priv":privateKey
+		}
 
 		// console.log(node)
-		return privateKey
+		return derived_node
 	},
 	generateSeed : function generateSeed () {
 		// Basic HD Wallet Controls

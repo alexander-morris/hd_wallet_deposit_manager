@@ -44,12 +44,20 @@ function generateAddressFromNonce (public_seed, nonce, currency) {
 		var PATH = 'm/44/' + currency_path_code + '/0/0/' + nonce
 		var node = public_seed.derive(PATH)
 
-		var pubKey = ethUtil.importPublic(node._publicKey)
+		if ( "ETH" === currency ) {
+			
+			var pubKey = ethUtil.importPublic(node._publicKey)
 
-		var address = ethUtil.pubToAddress(pubKey).toString('hex')
+			var address = ethUtil.pubToAddress(pubKey).toString('hex')
 
-		var chaddress = ethUtil.toChecksumAddress(address)
-		// console.log("New Wallet Generated", "\nAt path: " + PATH, "\nFull Node: ", node, "\nPub: " + pubKey, "\nAddr: " + address,  "\nchAddr: " + chaddress, "\n", "\n" )
+			var chaddress = ethUtil.toChecksumAddress(address)
+			// console.log("New Wallet Generated", "\nAt path: " + PATH, "\nFull Node: ", node, "\nPub: " + pubKey, "\nAddr: " + address,  "\nchAddr: " + chaddress, "\n", "\n" )
+		
+		} else if ( "BTC" === currency ) {
+
+			
+
+		}
 
 		// console.log(node)
 		return chaddress
