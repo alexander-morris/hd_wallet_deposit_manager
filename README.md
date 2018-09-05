@@ -2,6 +2,30 @@
 The Blockchain Institute - HD Wallet Kit
 =================
 
+## Using the wallet 
+
+This library makes it easy to set up an HD wallet running as a node.js server to accept BTC and ETH deposits. When you initialize the wallet, you'll receive the seed phrase and private key, but only the extended public key will be used to accept deposits, meaning this can be run on an unsecured server without any risk of the funds being compromised. Upcoming additions will provide further support for withdrawel transaction signing and monitoring deposit values. 
+
+### Initialization
+
+Now that you have everything set up, you can initialize your wallets by running initialize.js
+
+```node Utilities/initialize.js```
+
+This will print out a master private key and master public key. Save the master private key securely and copy the master public key and update the value in config.js.
+
+### Use
+
+To run the app, open the project directory in a command line and run ```node server.js``` to start the server on the port defined in config.json.
+
+### Funds Retrieval
+
+To retrieve funds, you'll need to generate private keys for each wallet. In practice, the easiest way to do so is to index through the nonces which have been used for past deposits and generate the private keys for each of them. 
+
+### Testing
+
+Nodes will be generated on the fly in production, but you can test that the private and public keys match by running test-generation.js with any pair of extended private and public keys. This will produce an ETH and BTC address for a random nonce, and check that the derived public key matches the derived private key. 
+
 ## Setup (one-time)
 
 ### Linux/Debian/Ubuntu
@@ -33,14 +57,6 @@ Finally, install all dependencies with yarn:
 yarn
 ```
 
-## Create the wallet 
 
-Now that you have everything set up, you can initialize your wallets by running initialize.js
-
-```node initialize.js```
-
-This will print out a master private key and master public key. Save the master private key securely and copy the master public key and update the value in controllers/deposit.js
-
-Nodes will be generated on the fly in production, but you can test that the private and public keys match by running test-generation.js with any pair of extended private and public keys. 
 
 

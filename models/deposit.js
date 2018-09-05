@@ -2,7 +2,7 @@
 var mongoose = require('mongoose');
 Schema = mongoose.Schema;
 
-// Define Schema (any attributes not explicitly defined will be ignored on write to Mongoose)
+// Mongoose Schema - add any additional data points here
 var depositSchema = new Schema ({
   name: String, 
   email: String, 

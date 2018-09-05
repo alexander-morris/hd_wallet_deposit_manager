@@ -20,7 +20,6 @@ const helper = require('./helper')
 var self =  module.exports = {
 	derivePKeyForNonce : function derivePKeyForNonce (nonce, currency, private_seed) {
 
-
 		var currency_path_code = helper.getCurrencyCode(currency)
 
 		var PATH = 'm/44/' + currency_path_code + '/0/0/' + nonce
@@ -56,6 +55,7 @@ var self =  module.exports = {
 		return derived_node
 	},
 	generateSeed : function generateSeed () {
+
 		// Basic HD Wallet Controls
 		// Configuration
 		var seed_phrase = ethHdWalletUtil.generateMnemonic()
@@ -67,11 +67,11 @@ var self =  module.exports = {
 		var seed = HDKey.fromMasterSeed(new Buffer.from(master_priv_key))
 
 		var master = {
+			'seed_phrase':seed_phrase,
 			'master_priv_key':master_priv_key,
-			'priv':seed.privateKey.toString('hex'),
-			'pub':seed.publicKey.toString('hex'),
-			'pubx':seed.publicExtendedKey
+			'extended_pub_key':seed.publicExtendedKey
 		};
+
 		return master;
 	}
 }

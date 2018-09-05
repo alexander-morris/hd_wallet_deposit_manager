@@ -7,6 +7,7 @@ var app        = express();
 var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
 var mongoose   = require('mongoose');
+var config 	   = require('./config.json')
 
 
 // Set up the db
@@ -18,7 +19,7 @@ db.on('error', function () {
 });
 
 // Set up connectivity
-var port = 8887;
+var port = config.server_port;
 var router = express.Router();
 
 // Set up H-W routing
