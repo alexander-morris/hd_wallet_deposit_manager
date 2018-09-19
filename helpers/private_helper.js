@@ -22,7 +22,7 @@ var self =  module.exports = {
 
 		var currency_path_code = helper.getCurrencyCode(currency)
 
-		var PATH = 'm/44/' + currency_path_code + '/0/0/' + nonce
+		var PATH = 'm/' + config.bip_level + '/' + currency_path_code + '/0/0/' + nonce
 		var node = private_seed.derive(PATH)
 		// console.log(node)
 

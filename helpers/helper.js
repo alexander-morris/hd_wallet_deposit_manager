@@ -42,7 +42,7 @@ function generateAddressFromNonce (public_seed, nonce, currency) {
 
 		var currency_path_code = self.getCurrencyCode(currency)
 
-		var PATH = 'm/44/' + currency_path_code + '/0/0/' + nonce
+		var PATH = 'm/' + config.bip_level + '/' + currency_path_code + '/0/0/' + nonce
 		var node = public_seed.derive(PATH)
 
 		if ( "ETH" === currency ) {

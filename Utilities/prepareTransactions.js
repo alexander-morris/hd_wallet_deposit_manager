@@ -26,17 +26,12 @@ db.on('error', function () {
 // Include models
 require('./models/deposit.js');
 var deposit = mongoose.model('deposits');
-
-
 var _bitcoreMnemonic2 = _interopRequireDefault(_bitcoreMnemonic);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var seed_phrase = "august voice drastic imitate stereo harvest permit inch jungle return step alone";
-
 const master_priv_key = new _bitcoreMnemonic2.default(seed_phrase).toHDPrivateKey().toString()
-
 var master_seed = HDKey.fromMasterSeed(new Buffer.from(master_priv_key, 'hex'))
-
 var wallets = getWallets('ETH', function(err, result) {
 	for ( var i = 0; i < result.length; i++ ) {
 		console.log(result[i].address)
@@ -80,21 +75,4 @@ function formatWalletList (set) {
 
 }
 
-function derivePKeyForNonce (nonce) {
 
-	var ETH_PATH = 'm/44/60/0/0/' + nonce
-	var node = master_seed.derive(ETH_PATH)
-	// console.log(node)
-
-	var pubKeyx = node._publicKey
-
-	// console.log("\n pubkey is \n " + pubKeyx, pubKeyx.toString('hex').length)
-
-	var privateKey = node._privateKey.toString('hex')
-	var pubKey = ethUtil.privateToPublic(node._privateKey)
-	var address = ethUtil.publicToAddress(pubKey).toString('hex')
-	var chaddress = ethUtil.toChecksumAddress(address)
-	// console.log("\nNew Wallet Key Generated", "\nFor path: " + ETH_PATH, "\nPub: " + pubKeyx.toString('hex'), "\nPriv: " + privateKey, "\nAddr: " + address,  "\nchAddr: " + chaddress, "\n", "\n" )
-
-	return privateKey;
-}

@@ -14,14 +14,14 @@ const _bitcoreMnemonic = require('bitcore-mnemonic');
 const bs58check = require('bs58check')
 const config = require('../config.json')
 const helper = require('../helpers/helper')
-const private_helper = require('./helpers/private_helper')
+const private_helper = require('../helpers/private_helper')
 
 const public_seed = HDKey.fromExtendedKey(config.master_pubx)
 const private_seed = HDKey.fromMasterSeed(new Buffer.from(config.master_priv_key))
 
-console.log( helper.generateNewAddress(63, "BTC", public_seed) )
+console.log( helper.generateNewAddress(1, "BTC", public_seed) )
 
-console.log( private_helper.derivePKeyForNonce(63, "BTC", private_seed) )
+console.log( private_helper.derivePKeyForNonce(1, "BTC", private_seed) )
 
 
 
