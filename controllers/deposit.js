@@ -105,9 +105,9 @@ function generateNewAddress (req, res) {
 		var address = helper.generateNewAddress(nonce, req.params.currency, public_seed)
 
 		var newDeposit = {
-			"name":"john",
-			"email":"email",
+			"email":req.body.email,
 			"currencyCode":req.params.currency,
+			"taxReceipt":req.body.taxReceipt,
 			"timestamp": new Date,
 			"nonce":nonce,
 			"address":address
