@@ -2,6 +2,11 @@
 The Blockchain Institute - HD Wallet Kit
 =================
 
+## Integration
+
+The easiest way to set this node up for your own use will be with the client provided here:
+https://github.com/BlockchainInstituteChi/qrdonations
+
 ## Using the wallet 
 
 This quickstart kit makes it easy to set up an HD wallet running as a node.js server to accept BTC and ETH deposits. When you initialize the wallet, you'll receive the seed phrase and private key, but only the extended public key will be used to accept deposits, meaning this can be run on an unsecured server without any risk of the funds being compromised. Upcoming additions will provide further support for withdrawal transaction signing and monitoring deposit values. 
