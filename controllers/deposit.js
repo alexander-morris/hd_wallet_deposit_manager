@@ -17,7 +17,7 @@ const Web3 = require('web3')
 const base58 = require('base-58')
 const _bitcoreMnemonic = require('bitcore-mnemonic')
 const bs58check = require('bs58check')
-const master_pubx = "xpub661MyMwAqRbcFg4yGV4vGLJCtXrFU72Zu3reG1hsCHpn4Pt5Gnhj9Dw89vQXAhfYgkuMfQRENQxEGBHv3kWhmow4PJgfEVtFxi3gF4sesPt"
+const master_pubx = "xpub661MyMwAqRbcEqK6yBmPA38CjWeRppeiAnwRAVY4bBCoP8qiuH1289638JuvVZ8L83ZWwpXoNdubDbMeZH459f5MuR6MZaRGYn8U3ykbZzn"
 
 // Generate the public seed which will be used to generate addresses
 const public_seed = HDKey.fromExtendedKey(config.master_pubx)
@@ -39,7 +39,7 @@ module.exports = {
 		        uri: 'https://recaptcha.google.com/recaptcha/api/siteverify',
 		        method: 'POST',
 		        formData: {
-		            secret: '1234567890',
+		            secret: '6LfPSXEUAAAAAMgpDo_3Ss8Q_y1TW_il72RQwNM-',
 		            response: response
 		        },
 		        json: true
@@ -48,7 +48,7 @@ module.exports = {
 		        console.log("recaptcha result", result)
 		        if (result.success) {
 		        	console.log('success: true')
-		            getRandomAddress(req, res)        	
+		            generateNewAddress(req, res)       	
 
 
 		        } else {
@@ -86,7 +86,7 @@ module.exports = {
 			  console.log('new record created')
 			  console.log(record)
 
-			  if(res) return res.status(200).send("New Address: " + address);
+			  if(res) return res.status(200).send(record);
 
 			}
 		});
@@ -94,6 +94,37 @@ module.exports = {
 	generateNewSeed : function generateNewSeed (req, res) {
 		return res.status(200).send(generateSeed())
 	}
+}
+
+function generateNewAddress (req, res) {
+
+		console.log('entered generateNewAddress')
+		var nonce = Math.floor(Math.random() * 100); 
+		console.log("nonce is " + nonce, "currency is " + req.params.currency, "seed is ", public_seed)
+
+		var address = helper.generateNewAddress(nonce, req.params.currency, public_seed)
+
+		var newDeposit = {
+			"name":"john",
+			"email":"email",
+			"currencyCode":req.params.currency,
+			"timestamp": new Date,
+			"nonce":nonce,
+			"address":address
+		}
+
+		deposit.create(newDeposit, function(err, record) {
+			if (err) {
+			  if(res) return res.status(500).send('Record init failed ' + err); 
+
+			}else{
+			  console.log('new record created')
+			  console.log(record)
+
+			  if(res) return res.status(200).send(record);
+
+			}
+		});
 }
 
 function getIntegerFromString (string) {
